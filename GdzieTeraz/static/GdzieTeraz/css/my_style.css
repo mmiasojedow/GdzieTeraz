@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Bangers|Ubuntu&display=swap');
+
+body {
+    font-family: 'Ubuntu', sans-serif;
+    background-color: rgba(197, 252, 255, 0.51);
+
+}
+
+.header {
+    padding: 60px;
+    text-align: center;
+    background: #1B5790;
+    color: #c5fcff;
+    font-size: 30px;
+}
+
+.header_main {
+    font-family: 'Bangers', cursive;
+    font-size: 60px;
+    color: #00a5ae;
+
+}
+
+.footer {
+    background-color: #F1F1F1;
+    text-align: center;
+    padding: 10px;
+}
+
+.btn-info {
+    background: #00a5ae;
+
+}
+
+.navbar {
+    background-color: #5783AE;
+    justify-content: space-evenly;
+    padding: 20px;
+}
+
+label {
+    color: white;
+}
