@@ -2,42 +2,141 @@
 
 body {
     font-family: 'Ubuntu', sans-serif;
-    background-color: rgba(197, 252, 255, 0.51);
-
+    background-color: rgba(197, 252, 255, 0.50);
 }
 
 .header {
-    padding: 60px;
+    padding: 25px;
     text-align: center;
     background: #1B5790;
     color: #c5fcff;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .header_main {
     font-family: 'Bangers', cursive;
-    font-size: 60px;
+    font-size: 40px;
     color: #00a5ae;
-
 }
 
-.footer {
-    background-color: #F1F1F1;
-    text-align: center;
-    padding: 10px;
-}
 
 .btn-info {
     background: #00a5ae;
-
 }
 
 .navbar {
     background-color: #5783AE;
     justify-content: space-evenly;
-    padding: 20px;
+    padding: 10px;
 }
 
-label {
+.bar-label {
     color: white;
+}
+
+
+.bar-header {
+    color: white;
+    font-size: 25px;
+}
+
+.my_form {
+    color: #00a5ae;
+    font-size: 15px;
+    text-align: center;
+    border: 5px;
+    margin: 20px auto 0;
+}
+
+.form-row {
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+
+.requiredField {
+    color: #00a5ae;
+}
+
+#submit-id-submit {
+    padding: 10px;
+    width: 200px;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+.details {
+    color: #00a5ae;
+    font-size: 20px;
+    text-align: center;
+    border: 10px;
+    margin: 20px auto 0;
+}
+
+.details div {
+    margin-top: 15px;
+}
+
+nav > * {
+    margin: 5px;
+}
+
+.tables-display {
+    width: 80%;
+    margin: 20px auto 0;
+    border-style: solid;
+    border-color: #00a5ae;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+.tables-display p {
+    text-align: center;
+    font-size: 30px;
+    color: white;
+    padding: 25px 0;
+
+}
+
+.table {
+    height: 100px;
+    margin: 5px;
+    border-radius: 25px;
+    background-color: #129567;
+}
+
+.True {
+    background-color: #de5a1b;
+
+}
+
+
+.S {
+    width: 100px;
+}
+
+.M {
+    width: 150px;
+}
+
+.L {
+    width: 200px;
+}
+
+.XL {
+    width: 250px;
+}
+
+.form_width {
+    width: 400px;
+    margin: 20px auto 0;
+
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
 }

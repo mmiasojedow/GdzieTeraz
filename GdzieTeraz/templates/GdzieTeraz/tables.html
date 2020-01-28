@@ -1,0 +1,37 @@
+{% extends 'GdzieTeraz/base.html' %}
+{% block navbar %}
+    <div class='bar-header'><a href="/restaurant_profile/{{ restaurant.pk }}">{{ restaurant.name }}</a></div>
+{% endblock %}
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <div class="details col-12 col-md-8">
+            <div>Wolne stoliki: {{ free_tables.count }}/{{ tables.count }}</div>
+            <div>Wolne miejsca: {{ free_seats }}/{{ seats }}</div>
+            <div><input type="submit" value="Aktualizuj stoliki" class="btn btn-info"></div>
+        </div>
+
+
+        <div class="tables-display">
+            {% for table in tables %}
+                <div class="table {{ table.get_size_display }} {{ table.taken }}"
+                     data-info="{{ table.pk }}"><p>{{ table.name }}</p></div>
+
+                <input type="checkbox" id="tables" name="tables" value="{{ table.pk }}" {% if table.taken %}
+                       checked="true" {% endif %} hidden>
+            {% endfor %}
+        </div>
+        <div class="details col-12 col-md-8">
+            <div class="btn btn-info" id="reset">RESET</div>
+        </div>
+
+    </form>
+
+    <div class="details col-12 col-md-8">
+
+    </div>
+
+
+
+    ​
+{% endblock %}

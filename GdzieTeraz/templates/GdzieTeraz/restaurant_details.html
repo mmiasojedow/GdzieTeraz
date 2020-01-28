@@ -1,0 +1,14 @@
+{% extends 'GdzieTeraz/base.html' %}
+{% block navbar %}
+    <div class='bar-header'>Restauracja {{ object.name }}</div>
+{% endblock %}
+{% block content %}
+    <div class="details col-12 col-md-8">
+        <div>Kuchnia: {{ object.get_kitchen_display }}</div>
+        <div>Miasto: {{ object.get_city_display }}</div>
+        <div>Adres: {{ object.address }}</div>
+        <div>Telefon: {{ object.phone }}</div>
+        <div><a href="/" class="btn btn-info">Strona główna</a></div>
+    </div>
+    ​
+{% endblock %}

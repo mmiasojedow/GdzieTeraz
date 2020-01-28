@@ -21,5 +21,12 @@ from GdzieTeraz.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MainView.as_view(), name='main'),
+    path('add_restaurant/', RestaurantAddView.as_view(), name='add_restaurant'),
+    path('restaurant_details/<int:pk>/', RestaurantDetailsView.as_view(), name='details_restaurant'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('restaurant_profile/<int:pk>/', RestaurantProfileView.as_view(), name='profile'),
+    path('tables/<int:pk>/', TablesView.as_view(), name='tables'),
+    path('add_tables/<int:pk>/', AddTableView.as_view(), name='add_tables'),
 
 ]

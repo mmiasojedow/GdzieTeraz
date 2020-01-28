@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -19,10 +20,10 @@ CITY = (
 )
 
 SIZES = (
-    (2, 2),
-    (4, 4),
-    (6, 6),
-    (8, 8),
+    (2, 'S'),
+    (4, 'M'),
+    (6, 'L'),
+    (8, 'XL'),
 )
 
 
@@ -32,7 +33,8 @@ class Restaurant(models.Model):
     city = models.IntegerField(choices=CITY, verbose_name='Miasto')
     address = models.CharField(max_length=128, verbose_name='Adres')
     phone = models.IntegerField(verbose_name='Telefon')
-    www = models.URLField(verbose_name='Strona')
+    www = models.URLField(verbose_name='Strona', null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
 
 class Tables(models.Model):
