@@ -1,6 +1,6 @@
 {% extends 'GdzieTeraz/base.html' %}
 {% block navbar %}
-    <div class='bar-header'><a href="/restaurant_profile/{{ restaurant.pk }}">{{ restaurant.name }}</a></div>
+    <div class='bar-header'>{{ restaurant.name }}</div>
 {% endblock %}
 {% block content %}
     <form method="post">

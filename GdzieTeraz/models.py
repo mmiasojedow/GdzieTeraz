@@ -3,6 +3,7 @@ from django.db import models
 
 # Create your models here.
 KITCHEN = (
+    (0, ''),
     (1, 'Amerykańska'),
     (2, 'Azjatycka'),
     (3, 'Europejska'),
@@ -33,8 +34,7 @@ class Restaurant(models.Model):
     city = models.IntegerField(choices=CITY, verbose_name='Miasto')
     address = models.CharField(max_length=128, verbose_name='Adres')
     phone = models.IntegerField(verbose_name='Telefon')
-    www = models.URLField(verbose_name='Strona', null=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
 
 class Tables(models.Model):
@@ -42,3 +42,7 @@ class Tables(models.Model):
     name = models.CharField(max_length=64, verbose_name='Nazwa')
     size = models.IntegerField(choices=SIZES, verbose_name='Wielkość')
     taken = models.BooleanField(default=False, verbose_name='Zajęty')
+
+
+class Token(models.Model):
+    token = models.TextField()

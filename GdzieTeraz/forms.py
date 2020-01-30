@@ -13,13 +13,28 @@ def LoginValidator(value):
         raise ValidationError('Login jest zajęty')
 
 
+def KitchenValidator(value):
+    if value == '0':
+        raise ValidationError('Wybierz rodzaj kuchni')
+
+
+class SearchForm(forms.Form):
+    city = forms.ChoiceField(choices=CITY, required=True,
+                             widget=forms.Select(attrs={'class': "custom-select mr-sm-2"}))
+    kitchen = forms.ChoiceField(choices=KITCHEN, required=False,
+                                widget=forms.Select(attrs={'class': "custom-select mr-sm-2"}))
+    name = forms.CharField(max_length=128, label='Nazwa', required=False,
+                           widget=forms.TextInput(
+                               attrs={'placeholder': 'Nazwa restauracji', 'class': "form-control mr-sm-2"}))
+
+
 class RestaurantAddForm(forms.Form):
     login = forms.CharField(label='Login', validators=[LoginValidator])
     mail = forms.EmailField(label='Email', error_messages={'invalid': "Nieprawidłowy adres Email"})
     password = forms.CharField(label='Hasło', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Powtórz hasło', widget=forms.PasswordInput)
     name = forms.CharField(label='Nazwa restauracji')
-    kitchen = forms.ChoiceField(choices=KITCHEN, label='Kuchania')
+    kitchen = forms.ChoiceField(choices=KITCHEN, label='Kuchania', validators=[KitchenValidator])
     city = forms.ChoiceField(choices=CITY, label='Miasto')
     address = forms.CharField(max_length=128, label='Adres')
     phone = forms.IntegerField(label='Telefon')

@@ -2,13 +2,17 @@
 {% load crispy_forms_tags %}
 
 {% block navbar %}
-    <div class='bar-header'>{{ bar }}</div>
+    {% if user.is_authenticated %}
+        <div class='bar-header'>{{ bar }}</div>
+    {% else %}
+        <div class='bar-header'>{{ bar }}</div>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
     {% block form %}
-    <div class="my_form col-12 col-md-8">
-        {% crispy form %}
-    </div>
+        <div class="my_form col-12 col-md-8">
+            {% crispy form %}
+        </div>
     {% endblock %}
 {% endblock %}

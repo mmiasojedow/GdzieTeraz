@@ -6,14 +6,11 @@
     <div class="details col-12 col-md-8">
         <div>Login: {{ restaurant.user.username }}</div>
         <div>Email: {{ restaurant.user.email }}</div>
-        <div>Adres: {{ restaurant.address }}</div>
-        <div>Miasto: {{ restaurant.get_city_display }}</div>
         <div>Telefon: {{ restaurant.phone }}</div>
+        <div>Adres: {{ restaurant.address }}, {{ restaurant.get_city_display }}</div>
         <div>Kuchnia: {{ restaurant.get_kitchen_display }}</div>
-        <div><a href="/tables/{{ restaurant.pk }}/" class="btn btn-info">Zarządzaj stolikami</a></div>
-        <div><a href="/add_tables/{{ restaurant.pk }}/" class="btn btn-info">Dodaj stoliki</a></div>
-
-        {#        <div><a href="/" class="btn btn-info">Edytuj dane</a></div>#}
+        <div><a href="/tables/" class="btn btn-info">Zarządzaj stolikami</a></div>
+        <div><a href="/add_tables/" class="btn btn-info">Dodaj stoliki</a></div>
     </div>
     ​
 {% endblock %}

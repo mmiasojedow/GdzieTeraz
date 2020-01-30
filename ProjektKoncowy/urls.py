@@ -14,19 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 
 from GdzieTeraz.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MainView.as_view(), name='main'),
-    path('add_restaurant/', RestaurantAddView.as_view(), name='add_restaurant'),
-    path('restaurant_details/<int:pk>/', RestaurantDetailsView.as_view(), name='details_restaurant'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('restaurant_profile/<int:pk>/', RestaurantProfileView.as_view(), name='profile'),
-    path('tables/<int:pk>/', TablesView.as_view(), name='tables'),
-    path('add_tables/<int:pk>/', AddTableView.as_view(), name='add_tables'),
+    path('profile/', RestaurantProfileView.as_view(), name='profile'),
+    path('tables/', TablesView.as_view(), name='tables'),
+    path('add_tables/', AddTableView.as_view(), name='add_tables'),
+    path('api-restaurant/<int:pk>/', APIRestaurantView.as_view(), name='api_restaurant'),
+    path('generate_token/', TokenGeneratorView.as_view(), name="token_generator"),
+    re_path(r'^add_restaurant/(?P<token>([a-z0-9]){32})/$', RestaurantAddView.as_view(), name="token_auth"),
 
 ]

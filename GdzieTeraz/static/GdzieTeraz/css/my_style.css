@@ -140,3 +140,26 @@ a, a:hover, a:focus, a:active {
     text-decoration: none;
     color: inherit;
 }
+
+.form-navbar > select, input, button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+
+.rest-name {
+    border-style: solid;
+    border-color: #00a5ae;
+    border-radius: 25px;
+    width: 80%;
+    margin: 20px auto 0;
+
+
+}
+
+.login-header {
+    height: 10%;
+    text-align: right;
+    background: #1B5790;
+
+}
