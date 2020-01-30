@@ -7,9 +7,13 @@ from django.views.generic import *
 from GdzieTeraz.forms import *
 from GdzieTeraz.models import *
 import secrets
-
+from geopy.geocoders import Nominatim
+from geopy import distance
+from geopy.exc import GeocoderTimedOut
 
 # Create your views here.
+geolocator = Nominatim(user_agent="GdzieTeraz", format_string="%s, Warsaw, Poland")
+
 
 # MAIN I LOGOWANIE
 
@@ -21,16 +25,36 @@ class MainView(View):
     def post(self, request):
         form = SearchForm(request.POST)
         if form.is_valid():
-            city = form.cleaned_data['city']
             kitchen = form.cleaned_data['kitchen']
             name = form.cleaned_data['name']
+            user_distance = form.cleaned_data['distance']
+            address = form.cleaned_data['address']
             empty = 'Żadna restauracja nie spełnia wymagań'
+            # zdobywanie lokalizacji użytkownika
+            try:
+                user_localization = geolocator.geocode(address)
+            except GeocoderTimedOut as e:
+                ups = 'Ups! Coś poszło nie tak...'
+                return render(request, 'GdzieTeraz/base.html',
+                              {'form': form, 'empty': ups})
+            user_latitude = user_localization.latitude
+            user_longitude = user_localization.longitude
+            user = (user_latitude, user_longitude)
+            # selekcja po nazwie i kuchni
             if kitchen == '0':
-                restaurants = Restaurant.objects.filter(city=city, name__icontains=name)
+                restaurants = Restaurant.objects.filter(name__icontains=name)
             else:
-                restaurants = Restaurant.objects.filter(city=city, kitchen=kitchen, name__icontains=name)
-            free_restaurants = []
+                restaurants = Restaurant.objects.filter(kitchen=kitchen, name__icontains=name)
+            # selekcja po odległości
+            near_restaurants = []
             for restaurant in restaurants:
+                rest_loc = (restaurant.latitude, restaurant.longitude)
+                dist = (round(distance.distance(user, rest_loc).km, 2))
+                if dist <= int(user_distance):
+                    near_restaurants.append(restaurant)
+            # selekcja po wolnych stolikach
+            free_restaurants = []
+            for restaurant in near_restaurants:
                 if len(restaurant.tables_set.filter(taken=False)) > 0:
                     free_restaurants.append(restaurant)
             return render(request, 'GdzieTeraz/base.html',
@@ -112,12 +136,11 @@ class RestaurantAddView(View):
             mail = form.cleaned_data['mail']
             name = form.cleaned_data['name']
             kitchen = form.cleaned_data['kitchen']
-            city = form.cleaned_data['city']
             address = form.cleaned_data['address']
             phone = form.cleaned_data['phone']
+
             new_user = User.objects.create_user(username, mail, password)
-            Restaurant.objects.create(name=name, kitchen=kitchen, city=city, address=address,
-                                      phone=phone, user=new_user)
+            Restaurant.objects.create(name=name, kitchen=kitchen, address=address, phone=phone, user=new_user)
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
@@ -132,8 +155,22 @@ class RestaurantProfileView(LoginRequiredMixin, View):
         restaurant = Restaurant.objects.get(user=request.user)
         return render(request, 'GdzieTeraz/restaurant_profile.html', {'restaurant': restaurant})
 
+    def post(self, request):
+        restaurant = Restaurant.objects.get(user=request.user)
+        try:
+            localization = geolocator.geocode(restaurant.address)
+        except GeocoderTimedOut as e:
+            ups = 'Ups! Coś poszło nie tak...'
+            return render(request, 'GdzieTeraz/base.html', {'error': ups})
+        latitude = localization.latitude
+        longitude = localization.longitude
+        restaurant.latitude = latitude
+        restaurant.longitude = longitude
+        restaurant.save()
+        return render(request, 'GdzieTeraz/restaurant_profile.html', {'restaurant': restaurant})
 
-class APIRestaurantView(LoginRequiredMixin, View):
+
+class APIRestaurantView(View):
     def get(self, request, pk):
         restaurant = Restaurant.objects.get(pk=pk)
         tables = restaurant.tables_set.all()
@@ -148,13 +185,9 @@ class APIRestaurantView(LoginRequiredMixin, View):
         for table in tables:
             seats += table.size
 
-        if not request.user.is_superuser:
-            return redirect("main")
-        else:
-            return JsonResponse({'kitchen': restaurant.get_kitchen_display(), 'address': restaurant.address,
-                                 'city': restaurant.get_city_display(), 'phone': restaurant.phone,
-                                 'free_tables': free_tables_count, 'tables': tables_count, 'free_seats': free_seats,
-                                 'seats': seats})
+        return JsonResponse({'kitchen': restaurant.get_kitchen_display(), 'address': restaurant.address,
+                             'phone': restaurant.phone, 'free_tables': free_tables_count, 'tables': tables_count,
+                             'free_seats': free_seats, 'seats': seats})
 
 
 # STOLIKI

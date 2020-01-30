@@ -4,13 +4,28 @@
 {% endblock %}
 {% block content %}
     <div class="details col-12 col-md-8">
+        <div>{{ error }}</div>
         <div>Login: {{ restaurant.user.username }}</div>
         <div>Email: {{ restaurant.user.email }}</div>
         <div>Telefon: {{ restaurant.phone }}</div>
         <div>Adres: {{ restaurant.address }}, Warszawa</div>
         <div>Kuchnia: {{ restaurant.get_kitchen_display }}</div>
-        <div><a href="/tables/" class="btn btn-info">Zarządzaj stolikami</a></div>
-        <div><a href="/add_tables/" class="btn btn-info">Dodaj stoliki</a></div>
+        <div>Lokalizacja: {% if restaurant.latitude %}{{ restaurant.latitude }}, {{ restaurant.longitude }}
+        {% else %} BRAK {% endif %}</div>
+        <div>
+            <a href="/tables/">
+                <button class="btn btn-info profile">Zarządzaj stolikami</button>
+            </a>
+        </div>
+        <div><a href="/add_tables/">
+            <button class="btn btn-info profile">Dodaj stoliki</button>
+        </a></div>
+        <form method="post">
+            {% csrf_token %}
+            <div>
+                <button type="submit" class="btn btn-info profile">Dodaj lokalizację</button>
+            </div>
+        </form>
     </div>
     ​
 {% endblock %}

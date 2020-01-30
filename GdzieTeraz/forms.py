@@ -6,6 +6,13 @@ from django import forms
 
 from GdzieTeraz.models import *
 
+DISTANCE = (
+    (1, '1 km'),
+    (3, '3 km'),
+    (5, '5 km'),
+    (10, '10 km'),
+)
+
 
 def LoginValidator(value):
     taken_logins = User.objects.filter(username=value)
@@ -24,6 +31,11 @@ class SearchForm(forms.Form):
     name = forms.CharField(max_length=128, label='Nazwa', required=False,
                            widget=forms.TextInput(
                                attrs={'placeholder': 'Nazwa restauracji', 'class': "form-control mr-sm-2"}))
+    address = forms.CharField(max_length=128, label='Adres', required=True,
+                              widget=forms.TextInput(
+                                  attrs={'placeholder': 'Twój adres', 'class': "form-control mr-sm-2"}))
+    distance = forms.ChoiceField(choices=DISTANCE, label='Promień', required=True,
+                                 widget=forms.Select(attrs={'class': "custom-select mr-sm-2"}))
 
 
 class RestaurantAddForm(forms.Form):
@@ -57,8 +69,8 @@ class RestaurantAddForm(forms.Form):
                 Column('password2', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
-            'name',
             Row(
+                Column('name', css_class='form-group col-md-6 mb-0'),
                 Column('kitchen', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),

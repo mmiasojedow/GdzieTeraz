@@ -163,3 +163,11 @@ a, a:hover, a:focus, a:active {
     background: #1B5790;
 
 }
+
+.profile{
+    width: 200px;
+}
+
+#id_kitchen{
+    margin-top: 5px;
+}
