@@ -33,7 +33,7 @@ class MainView(View):
             # zdobywanie lokalizacji użytkownika
             try:
                 user_localization = geolocator.geocode(address)
-            except GeocoderTimedOut as e:
+            except GeocoderTimedOut:
                 ups = 'Ups! Coś poszło nie tak...'
                 return render(request, 'GdzieTeraz/base.html',
                               {'form': form, 'empty': ups})

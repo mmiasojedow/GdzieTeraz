@@ -15,15 +15,15 @@
         <h1 class="header_main"><a href="/">Gdzie Teraz?!</a></h1>
         {% if user.is_authenticated %}
             <a href="/logout/">
-                <button class="btn btn-info">Wyloguj</button>
+                <button class="btn btn-info bar-button">Wyloguj</button>
             </a>
             {% if user.is_superuser %}
                 <a href="/generate_token/">
-                    <button class="btn btn-info">Token</button>
+                    <button class="btn btn-info bar-button">Token</button>
                 </a>
             {% else %}
                 <a href="/profile/">
-                    <button class="btn btn-info">Profil</button>
+                    <button class="btn btn-info bar-button">Profil</button>
                 </a>
             {% endif %}
         {% else %}

@@ -86,7 +86,7 @@ nav > * {
     margin: 20px auto 0;
     border-style: solid;
     border-color: #00a5ae;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.35);
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -170,4 +170,8 @@ a, a:hover, a:focus, a:active {
 
 #id_kitchen{
     margin-top: 5px;
+}
+
+.bar-button{
+    width: 100px;
 }
