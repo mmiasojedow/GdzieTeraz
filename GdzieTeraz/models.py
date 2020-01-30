@@ -14,12 +14,6 @@ KITCHEN = (
     (8, 'Wegetariańska'),
 )
 
-CITY = (
-    (1, 'Warszawa'),
-    (2, 'Trójmiasto'),
-    (3, 'Wrocław'),
-)
-
 SIZES = (
     (2, 'S'),
     (4, 'M'),
@@ -31,10 +25,11 @@ SIZES = (
 class Restaurant(models.Model):
     name = models.CharField(max_length=128, verbose_name='Nazwa')
     kitchen = models.IntegerField(choices=KITCHEN, verbose_name='Kuchania')
-    city = models.IntegerField(choices=CITY, verbose_name='Miasto')
     address = models.CharField(max_length=128, verbose_name='Adres')
     phone = models.IntegerField(verbose_name='Telefon')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
 
 
 class Tables(models.Model):

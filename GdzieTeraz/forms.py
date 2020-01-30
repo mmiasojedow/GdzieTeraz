@@ -19,8 +19,6 @@ def KitchenValidator(value):
 
 
 class SearchForm(forms.Form):
-    city = forms.ChoiceField(choices=CITY, required=True,
-                             widget=forms.Select(attrs={'class': "custom-select mr-sm-2"}))
     kitchen = forms.ChoiceField(choices=KITCHEN, required=False,
                                 widget=forms.Select(attrs={'class': "custom-select mr-sm-2"}))
     name = forms.CharField(max_length=128, label='Nazwa', required=False,
@@ -35,7 +33,6 @@ class RestaurantAddForm(forms.Form):
     password2 = forms.CharField(label='Powtórz hasło', widget=forms.PasswordInput)
     name = forms.CharField(label='Nazwa restauracji')
     kitchen = forms.ChoiceField(choices=KITCHEN, label='Kuchania', validators=[KitchenValidator])
-    city = forms.ChoiceField(choices=CITY, label='Miasto')
     address = forms.CharField(max_length=128, label='Adres')
     phone = forms.IntegerField(label='Telefon')
 
@@ -63,7 +60,6 @@ class RestaurantAddForm(forms.Form):
             'name',
             Row(
                 Column('kitchen', css_class='form-group col-md-6 mb-0'),
-                Column('city', css_class='form-group col-md-6 mb-0'),
                 css_class='form-row'
             ),
             Row(

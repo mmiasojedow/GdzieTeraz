@@ -36,8 +36,6 @@
     {% block navbar %}
         <form class="form-inline form-navbar" method="post">
             {% csrf_token %}
-            <label class="bar-label mr-sm-2">Miasto:</label>
-            {{ form.city }}
             <label class="bar-label mr-sm-2">Kuchnia:</label>
             {{ form.kitchen }}
             {{ form.name }}
