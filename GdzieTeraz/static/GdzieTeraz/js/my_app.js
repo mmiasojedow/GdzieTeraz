@@ -1,4 +1,5 @@
 console.log('dziala');
+console.log('test');
 
 let tables = $(".table");
 
