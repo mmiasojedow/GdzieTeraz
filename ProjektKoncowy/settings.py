@@ -73,7 +73,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProjektKoncowy.wsgi.application'
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -114,6 +113,17 @@ LOGIN_URL = '/login/'
 try:
     from ProjektKoncowy.local_settings import DATABASES
 except ModuleNotFoundError:
-    print("Brak konfiguracji bazy danych w pliku local_settings.py!")
-    print("Uzupełnij dane i spróbuj ponownie!")
-    exit(0)
+    try:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'mmiasojedow$GdzieTeraz',
+                'USER': 'mmiasojedow',
+                'PASSWORD': 'beDmom-cyvbyp-5kysto',
+                'HOST': 'mmiasojedow.mysql.pythonanywhere-services.com',
+            }
+        }
+    except ModuleNotFoundError:
+        print("Brak konfiguracji bazy danych w pliku local_settings.py!")
+        print("Uzupełnij dane i spróbuj ponownie!")
+        exit(0)
