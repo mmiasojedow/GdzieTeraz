@@ -50,8 +50,8 @@
 {% block content %}
     <div class="details col-12 col-md-8">
         {% for restaurant in restaurants %}
-            <div class="rest-name" data-info="{{ restaurant.pk }}">
-                <strong>{{ restaurant.name }}</strong>
+            <div class="rest-name" data-info="{{ restaurant.0 }}">
+                <strong>{{ restaurant.1 }}</strong>
                 <div style="display: none" class="hidden_div"></div>
             </div>
         {% empty %}

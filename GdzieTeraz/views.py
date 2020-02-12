@@ -22,6 +22,48 @@ class MainView(View):
         form = SearchForm()
         return render(request, 'GdzieTeraz/base.html', {'form': form})
 
+    # def post(self, request):
+    #     form = SearchForm(request.POST)
+    #     if form.is_valid():
+    #         kitchen = form.cleaned_data['kitchen']
+    #         name = form.cleaned_data['name']
+    #         user_distance = form.cleaned_data['distance']
+    #         address = form.cleaned_data['address']
+    #         empty = 'Żadna restauracja nie spełnia wymagań'
+    #         # zdobywanie lokalizacji użytkownika
+    #         try:
+    #             user_localization = geolocator.geocode(address)
+    #         except GeocoderTimedOut:
+    #             ups = 'Ups! Coś poszło nie tak...'
+    #             return render(request, 'GdzieTeraz/base.html',
+    #                           {'form': form, 'empty': ups})
+    #         user_latitude = user_localization.latitude
+    #         user_longitude = user_localization.longitude
+    #         user = (user_latitude, user_longitude)
+    #         # selekcja po nazwie i kuchni
+    #         if kitchen == '0':
+    #             restaurants = Restaurant.objects.filter(name__icontains=name)
+    #         else:
+    #             restaurants = Restaurant.objects.filter(kitchen=kitchen, name__icontains=name)
+    #         # selekcja po odległości
+    #         request.session['distance'] = {}
+    #         near_restaurants = []
+    #         for restaurant in restaurants:
+    #             rest_loc = (restaurant.latitude, restaurant.longitude)
+    #             dist = (round(distance.distance(user, rest_loc).km, 2))
+    #             if dist <= int(user_distance):
+    #                 request.session['distance'][str(restaurant.pk)] = dist
+    #                 near_restaurants.append(restaurant)
+    #         # selekcja po wolnych stolikach
+    #         free_restaurants = []
+    #         for restaurant in near_restaurants:
+    #             if len(restaurant.tables_set.filter(taken=False)) > 0:
+    #                 free_restaurants.append(restaurant)
+    #         return render(request, 'GdzieTeraz/base.html',
+    #                       {'form': form, 'restaurants': free_restaurants, 'empty': empty})
+    #     else:
+    #         return render(request, 'GdzieTeraz/base.html', {'form': form})
+
     def post(self, request):
         form = SearchForm(request.POST)
         if form.is_valid():
@@ -45,20 +87,23 @@ class MainView(View):
                 restaurants = Restaurant.objects.filter(name__icontains=name)
             else:
                 restaurants = Restaurant.objects.filter(kitchen=kitchen, name__icontains=name)
-            # selekcja po odległości
-            near_restaurants = []
+            # selekcja po wolnych stolikach
+            free_restaurants = []
             for restaurant in restaurants:
+                if len(restaurant.tables_set.filter(taken=False)) > 0:
+                    free_restaurants.append(restaurant)
+            # selekcja po odległości
+            request.session['distance'] = {}
+            near_restaurants = []
+            for restaurant in free_restaurants:
                 rest_loc = (restaurant.latitude, restaurant.longitude)
                 dist = (round(distance.distance(user, rest_loc).km, 2))
                 if dist <= int(user_distance):
-                    near_restaurants.append(restaurant)
-            # selekcja po wolnych stolikach
-            free_restaurants = []
-            for restaurant in near_restaurants:
-                if len(restaurant.tables_set.filter(taken=False)) > 0:
-                    free_restaurants.append(restaurant)
+                    request.session['distance'][str(restaurant.pk)] = dist
+                    near_restaurants.append([restaurant.pk, restaurant.name, dist])
+            near_restaurants.sort(key=lambda x: x[2])
             return render(request, 'GdzieTeraz/base.html',
-                          {'form': form, 'restaurants': free_restaurants, 'empty': empty})
+                          {'form': form, 'restaurants': near_restaurants, 'empty': empty})
         else:
             return render(request, 'GdzieTeraz/base.html', {'form': form})
 
@@ -161,7 +206,7 @@ class RestaurantProfileView(LoginRequiredMixin, View):
             localization = geolocator.geocode(restaurant.address)
         except GeocoderTimedOut as e:
             ups = 'Ups! Coś poszło nie tak...'
-            return render(request, 'GdzieTeraz/base.html', {'error': ups})
+            return render(request, 'GdzieTeraz/restaurant_profile.html', {'error': ups, 'restaurant': restaurant})
         latitude = localization.latitude
         longitude = localization.longitude
         restaurant.latitude = latitude
@@ -179,6 +224,9 @@ class APIRestaurantView(View):
         free_tables_count = len(free_tables)
         seats = 0
         free_seats = 0
+        distance = 0
+        if request.session.get('distance') is not None:
+            distance = request.session.get('distance').get(str(pk))
 
         for table in free_tables:
             free_seats += table.size
@@ -187,7 +235,7 @@ class APIRestaurantView(View):
 
         return JsonResponse({'kitchen': restaurant.get_kitchen_display(), 'address': restaurant.address,
                              'phone': restaurant.phone, 'free_tables': free_tables_count, 'tables': tables_count,
-                             'free_seats': free_seats, 'seats': seats})
+                             'free_seats': free_seats, 'seats': seats, 'distance': distance})
 
 
 # STOLIKI

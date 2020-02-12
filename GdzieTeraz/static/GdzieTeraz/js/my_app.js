@@ -39,7 +39,8 @@ restaurants.click(function () {
         let line3 = `<p>Kuchnia: ${data.kitchen}</p>`;
         let line4 = `<p>Adres: ${data.address}, Warszawa</p>`;
         let line5 = `<p>Telefon: ${data.phone}</p>`;
-        hidden.html(line1 + line2 + line3 + line4 + line5)
+        let line6 = `<p>Odległość: ${data.distance} km</p>`;
+        hidden.html(line6 + line1 + line2 + line3 + line4 + line5)
     });
 
 
