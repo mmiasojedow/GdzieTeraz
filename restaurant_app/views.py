@@ -4,15 +4,15 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import *
-from GdzieTeraz.forms import *
-from GdzieTeraz.models import *
+from restaurant_app.forms import *
+from restaurant_app.models import *
 import secrets
 from geopy.geocoders import Nominatim
 from geopy import distance
 from geopy.exc import GeocoderTimedOut
 
 # Create your views here.
-geolocator = Nominatim(user_agent="GdzieTeraz", format_string="%s, Warsaw, Poland")
+geolocator = Nominatim(user_agent="restaurant_app", format_string="%s, Warsaw, Poland")
 
 
 # MAIN I LOGOWANIE
@@ -20,7 +20,7 @@ geolocator = Nominatim(user_agent="GdzieTeraz", format_string="%s, Warsaw, Polan
 class MainView(View):
     def get(self, request):
         form = SearchForm()
-        return render(request, 'GdzieTeraz/base.html', {'form': form})
+        return render(request, 'restaurant_app/base.html', {'form': form})
 
     # def post(self, request):
     #     form = SearchForm(request.POST)
@@ -35,7 +35,7 @@ class MainView(View):
     #             user_localization = geolocator.geocode(address)
     #         except GeocoderTimedOut:
     #             ups = 'Ups! Coś poszło nie tak...'
-    #             return render(request, 'GdzieTeraz/base.html',
+    #             return render(request, 'restaurant_app/base.html',
     #                           {'form': form, 'empty': ups})
     #         user_latitude = user_localization.latitude
     #         user_longitude = user_localization.longitude
@@ -59,10 +59,10 @@ class MainView(View):
     #         for restaurant in near_restaurants:
     #             if len(restaurant.tables_set.filter(taken=False)) > 0:
     #                 free_restaurants.append(restaurant)
-    #         return render(request, 'GdzieTeraz/base.html',
+    #         return render(request, 'restaurant_app/base.html',
     #                       {'form': form, 'restaurants': free_restaurants, 'empty': empty})
     #     else:
-    #         return render(request, 'GdzieTeraz/base.html', {'form': form})
+    #         return render(request, 'restaurant_app/base.html', {'form': form})
 
     def post(self, request):
         form = SearchForm(request.POST)
@@ -77,7 +77,7 @@ class MainView(View):
                 user_localization = geolocator.geocode(address)
             except GeocoderTimedOut:
                 ups = 'Ups! Coś poszło nie tak...'
-                return render(request, 'GdzieTeraz/base.html',
+                return render(request, 'restaurant_app/base.html',
                               {'form': form, 'empty': ups})
             user_latitude = user_localization.latitude
             user_longitude = user_localization.longitude
@@ -102,17 +102,17 @@ class MainView(View):
                     request.session['distance'][str(restaurant.pk)] = dist
                     near_restaurants.append([restaurant.pk, restaurant.name, dist])
             near_restaurants.sort(key=lambda x: x[2])
-            return render(request, 'GdzieTeraz/base.html',
+            return render(request, 'restaurant_app/base.html',
                           {'form': form, 'restaurants': near_restaurants, 'empty': empty})
         else:
-            return render(request, 'GdzieTeraz/base.html', {'form': form})
+            return render(request, 'restaurant_app/base.html', {'form': form})
 
 
 class LoginView(View):
     def get(self, request):
         form = LoginForm()
         bar = 'Logowanie'
-        return render(request, 'GdzieTeraz/form.html', {'form': form, 'bar': bar})
+        return render(request, 'restaurant_app/form.html', {'form': form, 'bar': bar})
 
     def post(self, request):
         form = LoginForm(request.POST)
@@ -129,10 +129,10 @@ class LoginView(View):
                     url = request.GET.get('next') if request.GET.get('next') is not None else 'profile'
                     return redirect(url)
             else:
-                return render(request, 'GdzieTeraz/form.html',
+                return render(request, 'restaurant_app/form.html',
                               {'form': form, 'message': 'Błędny login lub hasło', 'bar': bar})
         else:
-            return render(request, 'GdzieTeraz/form.html', {'form': form, 'bar': bar})
+            return render(request, 'restaurant_app/form.html', {'form': form, 'bar': bar})
 
 
 class LogoutView(View):
@@ -145,14 +145,14 @@ class TokenGeneratorView(LoginRequiredMixin, View):
     def get(self, request):
         if request.user.is_superuser:
             bar = 'Link do rejestracji'
-            return render(request, 'GdzieTeraz/token.html', {'bar': bar})
+            return render(request, 'restaurant_app/token.html', {'bar': bar})
         else:
             return redirect("main")
 
     def post(self, request):
         token = secrets.token_hex(16)
         Token.objects.create(token=token)
-        return render(request, 'GdzieTeraz/token.html', {'token': f"http://localhost:8000/add_restaurant/{token}"})
+        return render(request, 'restaurant_app/token.html', {'token': f"http://localhost:8000/add_restaurant/{token}"})
 
 
 # RESTAURACJE
@@ -165,7 +165,7 @@ class RestaurantAddView(View):
         else:
             form = RestaurantAddForm()
             bar = 'Dołącz do naszej bazy restuaracji!'
-            return render(request, 'GdzieTeraz/form.html', {'form': form, 'bar': bar})
+            return render(request, 'restaurant_app/form.html', {'form': form, 'bar': bar})
 
     def post(self, request, token):
         t = Token.objects.get(token=token)
@@ -192,13 +192,13 @@ class RestaurantAddView(View):
                 return redirect("profile")
             return redirect("main")
         else:
-            return render(request, 'GdzieTeraz/form.html', {'form': form, 'bar': bar})
+            return render(request, 'restaurant_app/form.html', {'form': form, 'bar': bar})
 
 
 class RestaurantProfileView(LoginRequiredMixin, View):
     def get(self, request):
         restaurant = Restaurant.objects.get(user=request.user)
-        return render(request, 'GdzieTeraz/restaurant_profile.html', {'restaurant': restaurant})
+        return render(request, 'restaurant_app/restaurant_profile.html', {'restaurant': restaurant})
 
     def post(self, request):
         restaurant = Restaurant.objects.get(user=request.user)
@@ -206,13 +206,13 @@ class RestaurantProfileView(LoginRequiredMixin, View):
             localization = geolocator.geocode(restaurant.address)
         except GeocoderTimedOut as e:
             ups = 'Ups! Coś poszło nie tak...'
-            return render(request, 'GdzieTeraz/restaurant_profile.html', {'error': ups, 'restaurant': restaurant})
+            return render(request, 'restaurant_app/restaurant_profile.html', {'error': ups, 'restaurant': restaurant})
         latitude = localization.latitude
         longitude = localization.longitude
         restaurant.latitude = latitude
         restaurant.longitude = longitude
         restaurant.save()
-        return render(request, 'GdzieTeraz/restaurant_profile.html', {'restaurant': restaurant})
+        return render(request, 'restaurant_app/restaurant_profile.html', {'restaurant': restaurant})
 
 
 class APIRestaurantView(View):
@@ -245,7 +245,7 @@ class AddTableView(LoginRequiredMixin, View):
         restaurant = Restaurant.objects.get(user=request.user)
         form = AddTableForm()
         bar = restaurant.name
-        return render(request, 'GdzieTeraz/form.html', {'restaurant': restaurant, 'form': form, 'bar': bar})
+        return render(request, 'restaurant_app/form.html', {'restaurant': restaurant, 'form': form, 'bar': bar})
 
     def post(self, request):
         restaurant = Restaurant.objects.get(user=request.user)
@@ -256,9 +256,9 @@ class AddTableView(LoginRequiredMixin, View):
             size = form.cleaned_data['size']
             new_table = Tables.objects.create(restaurant=restaurant, name=name, size=size)
             bar = f"Dodano stolik o nazwie {new_table.name} dla {new_table.size} os."
-            return render(request, 'GdzieTeraz/form.html', {'restaurant': restaurant, 'form': form, 'bar': bar})
+            return render(request, 'restaurant_app/form.html', {'restaurant': restaurant, 'form': form, 'bar': bar})
         else:
-            return render(request, 'GdzieTeraz/form.html', {'restaurant': restaurant, 'form': form, 'bar': bar})
+            return render(request, 'restaurant_app/form.html', {'restaurant': restaurant, 'form': form, 'bar': bar})
 
 
 class TablesView(LoginRequiredMixin, View):
@@ -272,7 +272,7 @@ class TablesView(LoginRequiredMixin, View):
             free_seats += table.size
         for table in tables:
             seats += table.size
-        return render(request, 'GdzieTeraz/tables.html',
+        return render(request, 'restaurant_app/tables.html',
                       {'restaurant': restaurant, 'tables': tables, 'seats': seats, 'free_seats': free_seats,
                        'free_tables': free_tables})
 

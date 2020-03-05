@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 
-from GdzieTeraz.models import *
+from restaurant_app.models import *
 
 DISTANCE = (
     (1, '1 km'),

@@ -1,4 +1,4 @@
-"""ProjektKoncowy URL Configuration
+"""gdzie_teraz URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
-from GdzieTeraz.views import *
+from restaurant_app.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),

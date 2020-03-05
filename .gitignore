@@ -1,3 +1,4 @@
 .idea
 venv
-/ProjektKoncowy/local_settings.py
+/gdzie_teraz/local_settings.py
+__pycache__
