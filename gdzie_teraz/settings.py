@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'restaurant_app',
+    'main_app',
     'my_user_auth',
     'crispy_forms',
 
@@ -125,7 +125,7 @@ except ModuleNotFoundError:
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.mysql',
-                'NAME': 'mmiasojedow$restaurant_app',
+                'NAME': 'mmiasojedow$main_app',
                 'USER': 'mmiasojedow',
                 'PASSWORD': 'beDmom-cyvbyp-5kysto',
                 'HOST': 'mmiasojedow.mysql.pythonanywhere-services.com',

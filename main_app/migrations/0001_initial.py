@@ -41,7 +41,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=64, verbose_name='Nazwa')),
                 ('size', models.IntegerField(choices=[(2, 'S'), (4, 'M'), (6, 'L'), (8, 'XL')], verbose_name='Wielkość')),
                 ('taken', models.BooleanField(default=False, verbose_name='Zajęty')),
-                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='restaurant_app.Restaurant')),
+                ('restaurant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main_app.Restaurant')),
             ],
         ),
     ]
