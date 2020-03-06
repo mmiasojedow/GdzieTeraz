@@ -1,9 +1,8 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Row, Column, Submit
+from crispy_forms.layout import Column, Layout, Row, Submit
+from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django import forms
-
 from restaurant_app.models import KITCHEN, SIZES
 
 

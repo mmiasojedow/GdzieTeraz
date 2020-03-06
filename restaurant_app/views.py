@@ -1,13 +1,12 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.views import View
 from geopy.exc import GeocoderTimedOut
-
 from main_app.views import geolocator
 from my_user_auth.models import Token
-from restaurant_app.forms import RestaurantAddForm, AddTableForm
+from restaurant_app.forms import AddTableForm, RestaurantAddForm
 from restaurant_app.models import Restaurant, Tables
 
 
@@ -58,7 +57,7 @@ class RestaurantProfileView(LoginRequiredMixin, View):
         restaurant = Restaurant.objects.get(user=request.user)
         try:
             localization = geolocator.geocode(restaurant.address)
-        except GeocoderTimedOut as e:
+        except GeocoderTimedOut:
             ups = 'Ups! Coś poszło nie tak...'
             return render(request, 'restaurant_app/restaurant_profile.html', {'error': ups, 'restaurant': restaurant})
         latitude = localization.latitude
@@ -68,8 +67,6 @@ class RestaurantProfileView(LoginRequiredMixin, View):
         restaurant.save()
         return render(request, 'restaurant_app/restaurant_profile.html', {'restaurant': restaurant})
 
-
-# STOLIKI
 
 class AddTableView(LoginRequiredMixin, View):
     def get(self, request):

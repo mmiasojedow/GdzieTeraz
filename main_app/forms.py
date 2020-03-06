@@ -1,5 +1,4 @@
 from django import forms
-
 from restaurant_app.models import KITCHEN
 
 DISTANCE = (

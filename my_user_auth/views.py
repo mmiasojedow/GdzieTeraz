@@ -2,10 +2,8 @@ import secrets
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-
+from django.shortcuts import redirect, render
 from django.views import View
-
 from my_user_auth.forms import LoginForm
 from my_user_auth.models import Token
 

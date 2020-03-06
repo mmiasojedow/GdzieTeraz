@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from django.views import View
-
-from main_app.forms import SearchForm
-
-from geopy.geocoders import Nominatim
 from geopy import distance
 from geopy.exc import GeocoderTimedOut
-
+from geopy.geocoders import Nominatim
+from main_app.forms import SearchForm
 from restaurant_app.models import Restaurant
 
 geolocator = Nominatim(user_agent="gdzie_teraz", format_string="%s, Warsaw, Poland")

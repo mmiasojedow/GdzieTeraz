@@ -24,11 +24,7 @@ SECRET_KEY = '862tc(ru&_*pwo@pm&54logogtdxw@wth*dwlxv#+qqipdbdb-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'mmiasojedow.pythonanywhere.com',
-    '127.0.0.1',
-    'localhost',
-]
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -84,6 +80,11 @@ STATICFILES_DIRS = [
 
 WSGI_APPLICATION = 'gdzie_teraz.wsgi.application'
 
+# Database
+# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
+
+DATABASE = []
+
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -120,21 +121,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_URL = '/login/'
-
-try:
-    from gdzie_teraz.local_settings import DATABASES
-except ModuleNotFoundError:
-    try:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'NAME': 'mmiasojedow$main_app',
-                'USER': 'mmiasojedow',
-                'PASSWORD': 'beDmom-cyvbyp-5kysto',
-                'HOST': 'mmiasojedow.mysql.pythonanywhere-services.com',
-            }
-        }
-    except ModuleNotFoundError:
-        print("Brak konfiguracji bazy danych w pliku local_settings.py!")
-        print("Uzupełnij dane i spróbuj ponownie!")
-        exit(0)

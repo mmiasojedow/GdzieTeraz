@@ -1,6 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Column, Submit
-
+from crispy_forms.layout import Column, Layout, Submit
 from django import forms
 
 
