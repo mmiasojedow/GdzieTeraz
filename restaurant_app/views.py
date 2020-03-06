@@ -24,8 +24,6 @@ class RestaurantAddView(View):
         t = Token.objects.get(token=token)
         if not t:
             return redirect('main')
-        else:
-            t.delete()
         form = RestaurantAddForm(request.POST)
         bar = 'Dołącz do naszej bazy restuaracji!'
         if form.is_valid():
@@ -40,6 +38,9 @@ class RestaurantAddView(View):
             new_user = User.objects.create_user(username, mail, password)
             Restaurant.objects.create(name=name, kitchen=kitchen, address=address, phone=phone, user=new_user)
             user = authenticate(username=username, password=password)
+
+            t.delete()  # token deleting
+
             if user is not None:
                 login(request, user)
                 return redirect("profile")
