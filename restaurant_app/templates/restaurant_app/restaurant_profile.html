@@ -12,6 +12,14 @@
         <div>Kuchnia: {{ restaurant.get_kitchen_display }}</div>
         <div>Lokalizacja: {% if restaurant.latitude %}{{ restaurant.latitude }}, {{ restaurant.longitude }}
         {% else %} BRAK {% endif %}</div>
+        {% if not restaurant.latitude %}
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <button type="submit" class="btn btn-info profile">Dodaj lokalizację</button>
+                </div>
+            </form>
+        {% endif %}
         <div>
             <a href="/tables/">
                 <button class="btn btn-info profile">Zarządzaj stolikami</button>
@@ -20,12 +28,6 @@
         <div><a href="/add_tables/">
             <button class="btn btn-info profile">Dodaj stoliki</button>
         </a></div>
-        <form method="post">
-            {% csrf_token %}
-            <div>
-                <button type="submit" class="btn btn-info profile">Dodaj lokalizację</button>
-            </div>
-        </form>
     </div>
     ​
 {% endblock %}

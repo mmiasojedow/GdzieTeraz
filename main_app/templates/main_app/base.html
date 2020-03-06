@@ -51,7 +51,7 @@
     <div class="details col-12 col-md-8">
         {% for restaurant in restaurants %}
             <div class="rest-name" data-info="{{ restaurant.0 }}">
-                <strong>{{ restaurant.1 }}</strong>
+                <strong>{{ restaurant.1 }} ({{ restaurant.2 }} km)</strong>
                 <div style="display: none" class="hidden_div"></div>
             </div>
         {% empty %}
