@@ -16,18 +16,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
-from main_app.views import *
+from api.views import APIRestaurantView
+from main_app.views import MainView
+from my_user_auth.views import LoginView, LogoutView, TokenGeneratorView
+from restaurant_app.views import RestaurantProfileView, TablesView, AddTableView, RestaurantAddView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MainView.as_view(), name='main'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('generate_token/', TokenGeneratorView.as_view(), name="token_generator"),
     path('profile/', RestaurantProfileView.as_view(), name='profile'),
+    re_path(r'^add_restaurant/(?P<token>([a-z0-9]){32})/$', RestaurantAddView.as_view(), name="add_restaurant"),
     path('tables/', TablesView.as_view(), name='tables'),
     path('add_tables/', AddTableView.as_view(), name='add_tables'),
     path('api-restaurant/<int:pk>/', APIRestaurantView.as_view(), name='api_restaurant'),
-    path('generate_token/', TokenGeneratorView.as_view(), name="token_generator"),
-    re_path(r'^add_restaurant/(?P<token>([a-z0-9]){32})/$', RestaurantAddView.as_view(), name="token_auth"),
 
 ]

@@ -26,7 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'mmiasojedow.pythonanywhere.com',
-    '127.0.0.1'
+    '127.0.0.1',
+    'localhost',
 ]
 
 # Application definition
@@ -38,8 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api',
     'main_app',
     'my_user_auth',
+    'restaurant_app',
     'crispy_forms',
 
 ]
