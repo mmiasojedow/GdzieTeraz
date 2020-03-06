@@ -52,4 +52,5 @@ class TokenGeneratorView(LoginRequiredMixin, View):
     def post(self, request):
         token = secrets.token_hex(16)
         Token.objects.create(token=token)
-        return render(request, 'my_user_auth/token.html', {'token': f"http://localhost:8000/add_restaurant/{token}"})
+        url = request.build_absolute_uri().replace('generate_token', 'add_restaurant')
+        return render(request, 'my_user_auth/token.html', {'token': f"{url}{token}"})
