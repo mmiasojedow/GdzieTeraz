@@ -28,7 +28,7 @@ let restaurants = $('.rest-name');
 restaurants.click(function () {
     let info = $(this).data('info');
     let hidden = $(this).find('.hidden_div');
-    console.log(hidden);
+    // console.log(hidden);
     hidden.slideToggle();
 
     $.ajax({
